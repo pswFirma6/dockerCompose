@@ -24,9 +24,6 @@ services:
   pharmacy:
       image: student161/drugstore:latest
       container_name: savulja
-      build:
-        context: .
-        dockerfile: Dockerfile
       restart: on-failure
       ports:
         - "44377:80"
