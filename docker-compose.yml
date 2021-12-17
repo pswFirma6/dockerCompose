@@ -191,8 +191,5 @@ networks:
     driver: bridge
 volumes:
   database-data:
-    name: drugstoredb
   hospital-data:
-    name: hospitaldb
   integration-data:
-    name: integrationdb
