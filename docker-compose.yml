@@ -38,6 +38,9 @@ services:
         DATABASE_USERNAME: "root"
         DATABASE_PASSWORD: "root"
         DATABASE_SCHEMA: "drugstoredb"
+        RABBITMQ_HOST: rabbit
+        RABBITMQ_USERNAME: guest
+        RABBITMQ_PASSOWORD: guest
       depends_on:
         - postgres
         - rabbit
@@ -124,7 +127,8 @@ services:
       - i_network
   rabbit:
     image: rabbitmq:management-alpine
-    container_name: rabbitmq
+    container_name: rabbit
+    hostname: rabbit
     ports:
       - "15672:15672"
       - "5672:5672"
