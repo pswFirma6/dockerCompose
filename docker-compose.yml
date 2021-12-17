@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 
 services:
   postgres:
@@ -29,8 +29,7 @@ services:
         - "44377:80"
       networks: 
         - application
-        - network
-      
+        - network   
       environment:
         ASPNETCORE_ENVIRONMENT: Development
         DATABASE_HOST: "postgres"
@@ -50,16 +49,140 @@ services:
     networks:
       - public
       - application
+      - i_application
+
+
+  h_postgres:
+    image: postgres
+    container_name: h_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "hospitaldb"
+    volumes:
+      - type: volume
+        source: hospital-data
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./scripts/h_data.sql
+        target: /docker-entrypoint-initdb.d/init.sql
+    ports: 
+      - "5553:5432"
+    networks: 
+      - h_network
+  hospital:
+      image: student161/hospital:latest
+      container_name: lazaLazarevic
+      restart: on-failure
+      ports:
+        - "44392:80"
+      networks: 
+        - h_application
+        - h_network
+      environment:
+        ASPNETCORE_ENVIRONMENT: Development
+        DATABASE_HOST: "h_postgres"
+        DATABASE_PORT: "5432"
+        DATABASE_USERNAME: "root"
+        DATABASE_PASSWORD: "root"
+        DATABASE_SCHEMA: "hospitaldb"
+      depends_on:
+        - h_postgres
+  h_front:
+    depends_on:
+      - hospital
+    image: student161/appforpatients:latest
+    ports:
+      - "4202:4202"
+    restart: on-failure
+    networks:
+      - h_public
+      - h_application
+
+
+  i_postgres:
+    image: postgres
+    container_name: i_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "integrationdb"
+    volumes:
+      - type: volume
+        source: integration-data
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./scripts/i_data.sql
+        target: /docker-entrypoint-initdb.d/init.sql
+    ports: 
+      - "5554:5432"
+    networks: 
+      - i_network
+  rabbit:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+    networks:
+      - i_network
+  integration:
+      image: student161/integration:latest
+      container_name: integrisemoSe
+      restart: on-failure
+      ports:
+        - "44317:80"
+      networks: 
+        - i_application
+        - i_network     
+      environment:
+        ASPNETCORE_ENVIRONMENT: Development
+        DATABASE_HOST: "i_postgres"
+        DATABASE_PORT: "5432"
+        DATABASE_USERNAME: "root"
+        DATABASE_PASSWORD: "root"
+        DATABASE_SCHEMA: "integrationdb"
+      depends_on:
+        - i_postgres
+        - rabbit
+  i_front:
+    depends_on:
+      - integration
+    image: student161/appformanagers:latest
+    ports:
+      - "4201:4201"
+    restart: on-failure
+    networks:
+      - i_public
+      - i_application
+      - application
+      - h_application
+
+
+networks:
+  public:
+    driver: bridge
+  application:
+    driver: bridge
+  network:
+    driver: bridge
+  h_public:
+    driver: bridge
+  h_application:
+    driver: bridge
+  h_network:
+    driver: bridge
+  i_public:
+    driver: bridge
+  i_application:
+    driver: bridge
+  i_network:
+    driver: bridge
 volumes:
   database-data:
     name: drugstoredb
-networks:
-  public:
-    name: public
-    driver: bridge
-  application:
-    name: application
-    driver: bridge
-  network:
-    name: network
-    driver: bridge
+  hospital-data:
+    name: hospitaldb
+  integration-data:
+    name: integrationdb
