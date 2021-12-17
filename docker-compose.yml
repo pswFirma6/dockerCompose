@@ -30,6 +30,7 @@ services:
       networks: 
         - application
         - network   
+        - i_network
       environment:
         ASPNETCORE_ENVIRONMENT: Development
         DATABASE_HOST: "postgres"
@@ -39,6 +40,7 @@ services:
         DATABASE_SCHEMA: "drugstoredb"
       depends_on:
         - postgres
+        - rabbit
   front:
     depends_on:
       - pharmacy
@@ -50,7 +52,6 @@ services:
       - public
       - application
       - i_application
-
 
   h_postgres:
     image: postgres
@@ -80,6 +81,7 @@ services:
       networks: 
         - h_application
         - h_network
+        - i_network
       environment:
         ASPNETCORE_ENVIRONMENT: Development
         DATABASE_HOST: "h_postgres"
@@ -125,6 +127,7 @@ services:
     container_name: rabbitmq
     ports:
       - "15672:15672"
+      - "5672:5672"
     networks:
       - i_network
   integration:
@@ -143,6 +146,9 @@ services:
         DATABASE_USERNAME: "root"
         DATABASE_PASSWORD: "root"
         DATABASE_SCHEMA: "integrationdb"
+        RABBITMQ_HOST: rabbit
+        RABBITMQ_USERNAME: guest
+        RABBITMQ_PASSOWORD: guest
       depends_on:
         - i_postgres
         - rabbit
