@@ -1,7 +1,7 @@
 name: deploy system
 on:
   push:
-    branches: [feature-serverDeploy] 
+    branches: [master] 
 
 jobs:
   build:
