@@ -4,10 +4,6 @@ CREATE TABLE public."Allergies" (
     "ReactionType" text,
     "ReactionTime" text
 );
-
-
-ALTER TABLE public."Allergies" OWNER TO root;
-
 --
 -- TOC entry 210 (class 1259 OID 33092)
 -- Name: Allergies_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -32,10 +28,6 @@ CREATE TABLE public."AllergyPatient" (
     "AllergiesId" integer NOT NULL,
     "PatientsId" integer NOT NULL
 );
-
-
-ALTER TABLE public."AllergyPatient" OWNER TO root;
-
 --
 -- TOC entry 232 (class 1259 OID 33201)
 -- Name: Appointments; Type: TABLE; Schema: public; Owner: root
@@ -49,10 +41,6 @@ CREATE TABLE public."Appointments" (
     "SurveyTaken" boolean NOT NULL,
     "Type" integer NOT NULL
 );
-
-
-ALTER TABLE public."Appointments" OWNER TO root;
-
 --
 -- TOC entry 231 (class 1259 OID 33200)
 -- Name: Appointments_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -78,10 +66,6 @@ CREATE TABLE public."Buildings" (
     "Name" text,
     deleted boolean NOT NULL
 );
-
-
-ALTER TABLE public."Buildings" OWNER TO root;
-
 --
 -- TOC entry 212 (class 1259 OID 33100)
 -- Name: Buildings_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -120,10 +104,6 @@ CREATE TABLE public."Doctors" (
     "UserType" integer NOT NULL,
     "Activated" boolean NOT NULL
 );
-
-
-ALTER TABLE public."Doctors" OWNER TO root;
-
 --
 -- TOC entry 214 (class 1259 OID 33108)
 -- Name: Doctors_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -151,10 +131,6 @@ CREATE TABLE public."Equipments" (
     "Amount" integer NOT NULL,
     deleted boolean NOT NULL
 );
-
-
-ALTER TABLE public."Equipments" OWNER TO root;
-
 --
 -- TOC entry 233 (class 1259 OID 33216)
 -- Name: Equipments_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -184,10 +160,6 @@ CREATE TABLE public."Feedbacks" (
     "Anonymous" boolean NOT NULL,
     "Publish" boolean NOT NULL
 );
-
-
-ALTER TABLE public."Feedbacks" OWNER TO root;
-
 --
 -- TOC entry 216 (class 1259 OID 33116)
 -- Name: Feedbacks_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -214,9 +186,6 @@ CREATE TABLE public."Floors" (
     deleted boolean NOT NULL
 );
 
-
-ALTER TABLE public."Floors" OWNER TO root;
-
 --
 -- TOC entry 218 (class 1259 OID 33124)
 -- Name: Floors_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -242,9 +211,6 @@ CREATE TABLE public."Medicines" (
     "Name" text,
     "Quantity" integer NOT NULL
 );
-
-
-ALTER TABLE public."Medicines" OWNER TO root;
 
 --
 -- TOC entry 220 (class 1259 OID 33130)
@@ -291,9 +257,6 @@ CREATE TABLE public."Patients" (
     "Activated" boolean NOT NULL
 );
 
-
-ALTER TABLE public."Patients" OWNER TO root;
-
 --
 -- TOC entry 226 (class 1259 OID 33154)
 -- Name: Patients_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -330,9 +293,6 @@ CREATE TABLE public."Prescriptions" (
     "PharmacyName" text
 );
 
-
-ALTER TABLE public."Prescriptions" OWNER TO root;
-
 --
 -- TOC entry 222 (class 1259 OID 33138)
 -- Name: Prescriptions_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -364,8 +324,6 @@ CREATE TABLE public."Rooms" (
 );
 
 
-ALTER TABLE public."Rooms" OWNER TO root;
-
 --
 -- TOC entry 228 (class 1259 OID 33167)
 -- Name: Rooms_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -394,9 +352,6 @@ CREATE TABLE public."SurveyQuestion" (
     "Category" integer NOT NULL
 );
 
-
-ALTER TABLE public."SurveyQuestion" OWNER TO root;
-
 --
 -- TOC entry 224 (class 1259 OID 33146)
 -- Name: SurveyQuestion_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -422,8 +377,6 @@ CREATE TABLE public."__EFMigrationsHistory" (
     "ProductVersion" character varying(32) NOT NULL
 );
 
-
-ALTER TABLE public."__EFMigrationsHistory" OWNER TO root;
 
 --
 -- TOC entry 3230 (class 2606 OID 33099)
@@ -685,9 +638,6 @@ ALTER TABLE ONLY public."Rooms"
 -- Name: DATABASE hospitaldb; Type: ACL; Schema: -; Owner: postgres
 --
 
-GRANT ALL ON DATABASE hospitaldb TO root;
-
-
 -- Completed on 2021-12-13 22:24:17
 
 --
@@ -706,8 +656,8 @@ INSERT INTO public."Allergies" VALUES (5, 'Amitriptilin', 'Stomach sickness', '1
 -- Data for Name: Doctors; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public."Doctors" VALUES (1, 1, 'Ivan', 'Ivanovic', '1990-06-10 00:00:00', '651231133', 'Lasla Gala, 6.', '1331232', 'ivan@gmail.com', 'ivan', 'ivan', 0, 'Novi Sad', 'Serbia', 0, true);
-INSERT INTO public."Doctors" VALUES (2, 1, 'Nikola', 'Slavnic', '1990-06-11 00:00:00', '111231133', 'Lasla Gala, 7.', '11231232', 'nikola@gmail.com', 'nikola', 'nikola', 0, 'Novi Sad', 'Serbia', 0, true);
+INSERT INTO public."Doctors" VALUES (1, 20, 'Ivan', 'Ivanovic', '1990-06-10 00:00:00', '651231133', 'Lasla Gala, 6.', '1331232', 'ivan@gmail.com', 'ivan', 'ivan', 0, 'Novi Sad', 'Serbia', 0, true);
+INSERT INTO public."Doctors" VALUES (2, 20, 'Nikola', 'Slavnic', '1990-06-11 00:00:00', '111231133', 'Lasla Gala, 7.', '11231232', 'nikola@gmail.com', 'nikola', 'nikola', 0, 'Novi Sad', 'Serbia', 0, true);
 
 
 --
@@ -742,45 +692,6 @@ INSERT INTO public."Appointments" VALUES (3, '2021-12-30 08:00:00', 1, 1, false,
 INSERT INTO public."Appointments" VALUES (4, '2021-12-30 08:30:00', 1, 1, false, 0);
 INSERT INTO public."Appointments" VALUES (5, '2021-12-30 09:00:00', 1, 1, false, 0);
 INSERT INTO public."Appointments" VALUES (6, '2021-12-30 09:30:00', 1, 1, false, 0);
-
-
---
--- TOC entry 3413 (class 0 OID 33101)
--- Dependencies: 213
--- Data for Name: Buildings; Type: TABLE DATA; Schema: public; Owner: root
---
-
-
-
---
--- TOC entry 3419 (class 0 OID 33125)
--- Dependencies: 219
--- Data for Name: Floors; Type: TABLE DATA; Schema: public; Owner: root
---
-
-
-
---
--- TOC entry 3429 (class 0 OID 33168)
--- Dependencies: 229
--- Data for Name: Rooms; Type: TABLE DATA; Schema: public; Owner: root
---
-
-
-
---
--- TOC entry 3434 (class 0 OID 33217)
--- Dependencies: 234
--- Data for Name: Equipments; Type: TABLE DATA; Schema: public; Owner: root
---
-
-
-
---
--- TOC entry 3417 (class 0 OID 33117)
--- Dependencies: 217
--- Data for Name: Feedbacks; Type: TABLE DATA; Schema: public; Owner: root
---
 
 INSERT INTO public."Feedbacks" VALUES (1, 1, 'Great service', '1990-06-11 00:00:00', 0, false, true);
 INSERT INTO public."Feedbacks" VALUES (2, 1, 'Good customer care', '1990-06-11 00:00:00', 2, true, false);

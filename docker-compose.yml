@@ -1,194 +1,220 @@
 version: "3.3"
 
 services:
-  postgres:
-    image: postgres
-    container_name: db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: "root"
-      POSTGRES_USER: "root"
-      POSTGRES_DB: "drugstoredb"
-    volumes:
-      - type: volume
-        source: database-data
-        target: /var/lib/postgresql/data
-      - type: bind
-        source: ./scripts/d_data.sql
-        target: /docker-entrypoint-initdb.d/init.sql
-    ports: 
-      - "5555:5432"
-    networks: 
-      - network
+      postgres:
+        image: postgres
+        container_name: db
+        restart: always
+        environment:
+          POSTGRES_PASSWORD_FILE: "/run/secrets/db_pass"
+          POSTGRES_USER_FILE: "/run/secrets/db_user"
+          POSTGRES_DB: "drugstoredb"
+        volumes:
+          - type: bind
+            source: ./scripts/d_data.sql
+            target: /docker-entrypoint-initdb.d/init.sql
+        ports: 
+          - "5555:5432"
+        networks: 
+          - network
+        secrets:
+          - db_pass
+          - db_user
 
-  pharmacy:
-      image: student161/drugstore:latest
-      container_name: savulja
-      restart: on-failure
-      ports:
-        - "44377:80"
-      networks: 
-        - application
-        - network   
-        - i_network
-      environment:
-        ASPNETCORE_ENVIRONMENT: Development
-        DATABASE_HOST: "postgres"
-        DATABASE_PORT: "5432"
-        DATABASE_USERNAME: "root"
-        DATABASE_PASSWORD: "root"
-        DATABASE_SCHEMA: "drugstoredb"
-        RABBITMQ_HOST: rabbit
-        RABBITMQ_USERNAME: guest
-        RABBITMQ_PASSOWORD: guest
-      depends_on:
-        - postgres
-        - rabbit
-  front:
-    depends_on:
-      - pharmacy
-    image: student161/a666:latest
-    ports:
-      - "4200:4200"
-    restart: on-failure
-    networks:
-      - public
-      - application
-      - i_application
+      pharmacy:
+          image: student161/d666
+          container_name: savulja
+          restart: on-failure
+          ports:
+            - "44377:80"
+          networks: 
+            - application
+            - network   
+            - i_network
+          environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            DATABASE_HOST: "postgres"
+            DATABASE_PORT: "5432"
+            DATABASE_USERNAME_FILE: "/run/secrets/db_user"
+            DATABASE_PASSWORD_FILE: "/run/secrets/db_pass"
+            DATABASE_SCHEMA: "drugstoredb"
+            RABBITMQ_HOST: rabbit
+            RABBITMQ_USERNAME: guest
+            RABBITMQ_PASSOWORD: guest
+            NASA_VARIJABLA : "http://integrisemoSe"
+            API_KEY : "oakisyhgtdhsjkops"
+            NAME : "GalenPharm"
+            URL : "http://localhost:44377/"
+            STREET: "Rumenacka 50"
+            CITY : "Novi Sad"
+            FILE_PROTOCOL: "HTTP"
+            HOSPITAL_URL: "http://lazaLazarevic/urgentProcurement"
+          depends_on:
+            - postgres
+            - rabbit
+          secrets:
+            - db_pass
+            - db_user
+      front:
+        depends_on:
+          - pharmacy
+        image: student161/a666:latest
+        ports:
+          - "4200:4200"
+        restart: on-failure
+        networks:
+          - public
+          - application
+          - i_application
 
-  h_postgres:
-    image: postgres
-    container_name: h_db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: "root"
-      POSTGRES_USER: "root"
-      POSTGRES_DB: "hospitaldb"
-    volumes:
-      - type: volume
-        source: hospital-data
-        target: /var/lib/postgresql/data
-      - type: bind
-        source: ./scripts/h_data.sql
-        target: /docker-entrypoint-initdb.d/init.sql
-    ports: 
-      - "5553:5432"
-    networks: 
-      - h_network
-  hospital:
-      image: student161/hospital:latest
-      container_name: lazaLazarevic
-      restart: on-failure
-      ports:
-        - "44392:80"
-      networks: 
-        - h_application
-        - h_network
-        - i_network
-      environment:
-        ASPNETCORE_ENVIRONMENT: Development
-        DATABASE_HOST: "h_postgres"
-        DATABASE_PORT: "5432"
-        DATABASE_USERNAME: "root"
-        DATABASE_PASSWORD: "root"
-        DATABASE_SCHEMA: "hospitaldb"
-      depends_on:
-        - h_postgres
-  h_front:
-    depends_on:
-      - hospital
-    image: student161/appforpatients:latest
-    ports:
-      - "4202:4202"
-    restart: on-failure
-    networks:
-      - h_public
-      - h_application
+      h_postgres:
+        image: postgres
+        container_name: h_db
+        restart: always
+        environment:
+          POSTGRES_PASSWORD_FILE: "/run/secrets/db_pass"
+          POSTGRES_USER_FILE: "/run/secrets/db_user"
+          POSTGRES_DB: "hospitaldb"
+        volumes:
+          - type: bind
+            source: ./scripts/h_data.sql
+            target: /docker-entrypoint-initdb.d/init.sql
+        ports: 
+          - "5553:5432"
+        networks: 
+          - h_network
+        secrets:
+          - db_pass
+          - db_user
+      hospital:
+          image: student161/hospital:latest
+          container_name: lazaLazarevic
+          restart: on-failure
+          ports:
+            - "44392:80"
+          networks: 
+            - h_application
+            - h_network
+            - i_network
+          environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            DATABASE_HOST: "h_postgres"
+            DATABASE_PORT: "5432"
+            DATABASE_USERNAME_FILE: "/run/secrets/db_user"
+            DATABASE_PASSWORD_FILE: "/run/secrets/db_pass"
+            DATABASE_SCHEMA: "hospitaldb"
+          depends_on:
+            - h_postgres
+          secrets:
+            - db_pass
+            - db_user
+
+      h_front:
+        depends_on:
+          - hospital
+        image: student161/appforpatients:latest
+        ports:
+          - "4202:4202"
+        restart: on-failure
+        networks:
+          - h_public
+          - h_application
 
 
-  i_postgres:
-    image: postgres
-    container_name: i_db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: "root"
-      POSTGRES_USER: "root"
-      POSTGRES_DB: "integrationdb"
-    volumes:
-      - type: volume
-        source: integration-data
-        target: /var/lib/postgresql/data
-      - type: bind
-        source: ./scripts/i_data.sql
-        target: /docker-entrypoint-initdb.d/init.sql
-    ports: 
-      - "5554:5432"
-    networks: 
-      - i_network
-  rabbit:
-    image: rabbitmq:management-alpine
-    container_name: rabbit
-    hostname: rabbit
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    networks:
-      - i_network
-  integration:
-      image: student161/integration:latest
-      container_name: integrisemoSe
-      restart: on-failure
-      ports:
-        - "44317:80"
-      networks: 
-        - i_application
-        - i_network     
-      environment:
-        ASPNETCORE_ENVIRONMENT: Development
-        DATABASE_HOST: "i_postgres"
-        DATABASE_PORT: "5432"
-        DATABASE_USERNAME: "root"
-        DATABASE_PASSWORD: "root"
-        DATABASE_SCHEMA: "integrationdb"
-        RABBITMQ_HOST: rabbit
-        RABBITMQ_USERNAME: guest
-        RABBITMQ_PASSOWORD: guest
-      depends_on:
-        - i_postgres
-        - rabbit
-  i_front:
-    depends_on:
-      - integration
-    image: student161/appformanagers:latest
-    ports:
-      - "4201:4201"
-    restart: on-failure
-    networks:
-      - i_public
-      - i_application
-      - application
-      - h_application
+      i_postgres:
+        image: postgres
+        container_name: i_db
+        restart: always
+        environment:
+          POSTGRES_PASSWORD_FILE: "/run/secrets/db_pass"
+          POSTGRES_USER_FILE: "/run/secrets/db_user"
+          POSTGRES_DB: "integrationdb"
+        volumes:
+          - type: bind
+            source: ./scripts/i_data.sql
+            target: /docker-entrypoint-initdb.d/init.sql
+        ports: 
+          - "5554:5432"
+        networks: 
+          - i_network
+        secrets:
+          - db_pass
+          - db_user
 
+      rabbit:
+        image: rabbitmq:management-alpine
+        container_name: rabbit
+        hostname: rabbit
+        ports:
+          - "15672:15672"
+          - "5672:5672"
+        networks:
+          - i_network
+      integration:
+          image: student161/integration:latest
+          container_name: integrisemoSe
+          restart: on-failure
+          ports:
+            - "44317:80"
+          networks: 
+            - i_application
+            - i_network     
+          environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            DATABASE_HOST: "i_postgres"
+            DATABASE_PORT: "5432"
+            DATABASE_USERNAME_FILE: "/run/secrets/db_user"
+            DATABASE_PASSWORD_FILE: "/run/secrets/db_pass"
+            DATABASE_SCHEMA: "integrationdb"
+            RABBITMQ_HOST: rabbit
+            RABBITMQ_USERNAME: guest
+            RABBITMQ_PASSOWORD: guest
+            API_KEY: "jaksjdhagshjikps"
+            DRUGSTORE_NOT: "http://savulja/tenderNotification"
+          depends_on:
+            - i_postgres
+            - rabbit
+          secrets:
+            - db_pass
+            - db_user
+      i_front:
+        depends_on:
+          - integration
+        image: student161/appformanagers:latest
+        ports:
+          - "4201:4201"
+        restart: on-failure
+        networks:
+          - i_public
+          - i_application
+          - application
+          - h_application
+      
+secrets:
+    db_pass:
+      external: true
+    db_user:
+      external: true
 
 networks:
   public:
-    driver: bridge
+    driver: overlay
   application:
-    driver: bridge
+    driver: overlay
   network:
-    driver: bridge
+    driver: overlay
   h_public:
-    driver: bridge
+    driver: overlay
   h_application:
-    driver: bridge
+    driver: overlay
   h_network:
-    driver: bridge
+    driver: overlay
   i_public:
-    driver: bridge
+    driver: overlay
   i_application:
-    driver: bridge
+    driver: overlay
   i_network:
-    driver: bridge
+    driver: overlay
 volumes:
   database-data:
   hospital-data:
