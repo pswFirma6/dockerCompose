@@ -22,7 +22,7 @@ services:
           - db_user
 
       pharmacy:
-          image: student161/d666
+          image: student161/drugstore
           container_name: savulja
           restart: on-failure
           ports:
@@ -41,14 +41,14 @@ services:
             RABBITMQ_HOST: rabbit
             RABBITMQ_USERNAME: guest
             RABBITMQ_PASSOWORD: guest
-            NASA_VARIJABLA : "http://integrisemoSe"
+            NASA_VARIJABLA : "http://up_integration"
             API_KEY : "oakisyhgtdhsjkops"
             NAME : "GalenPharm"
             URL : "http://localhost:44377/"
             STREET: "Rumenacka 50"
             CITY : "Novi Sad"
             FILE_PROTOCOL: "HTTP"
-            HOSPITAL_URL: "http://lazaLazarevic/urgentProcurement"
+            HOSPITAL_URL: "http://up_hospital/urgentProcurement"
           depends_on:
             - postgres
             - rabbit
@@ -170,7 +170,7 @@ services:
             RABBITMQ_USERNAME: guest
             RABBITMQ_PASSOWORD: guest
             API_KEY: "jaksjdhagshjikps"
-            DRUGSTORE_NOT: "http://savulja/tenderNotification"
+            DRUGSTORE_NOT: "http://up_pharmacy/tenderNotification"
           depends_on:
             - i_postgres
             - rabbit

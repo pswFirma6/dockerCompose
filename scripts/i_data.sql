@@ -1,3 +1,5 @@
+CREATE USER root WITH PASSWORD 'root';
+
 CREATE TABLE public."Feedbacks" (
     "Id" integer NOT NULL,
     "Content" text,
@@ -306,6 +308,8 @@ CREATE TABLE public."__EFMigrationsHistory" (
 -- Dependencies: 211
 -- Data for Name: Feedbacks; Type: TABLE DATA; Schema: public; Owner: root
 --
+GRANT ALL ON DATABASE integrationdb TO root;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
 
 INSERT INTO public."Notifications"(
 	"Id", "Title", "Content", "Date", "FileName", "Read")

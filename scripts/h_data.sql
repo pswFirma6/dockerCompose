@@ -1,9 +1,15 @@
+CREATE USER root WITH PASSWORD 'root';
+
 CREATE TABLE public."Allergies" (
     "Id" integer NOT NULL,
     "Medicine" text,
     "ReactionType" text,
     "ReactionTime" text
 );
+
+
+ALTER TABLE public."Allergies" OWNER TO root;
+
 --
 -- TOC entry 210 (class 1259 OID 33092)
 -- Name: Allergies_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -28,6 +34,10 @@ CREATE TABLE public."AllergyPatient" (
     "AllergiesId" integer NOT NULL,
     "PatientsId" integer NOT NULL
 );
+
+
+ALTER TABLE public."AllergyPatient" OWNER TO root;
+
 --
 -- TOC entry 232 (class 1259 OID 33201)
 -- Name: Appointments; Type: TABLE; Schema: public; Owner: root
@@ -41,6 +51,10 @@ CREATE TABLE public."Appointments" (
     "SurveyTaken" boolean NOT NULL,
     "Type" integer NOT NULL
 );
+
+
+ALTER TABLE public."Appointments" OWNER TO root;
+
 --
 -- TOC entry 231 (class 1259 OID 33200)
 -- Name: Appointments_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -66,6 +80,10 @@ CREATE TABLE public."Buildings" (
     "Name" text,
     deleted boolean NOT NULL
 );
+
+
+ALTER TABLE public."Buildings" OWNER TO root;
+
 --
 -- TOC entry 212 (class 1259 OID 33100)
 -- Name: Buildings_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -104,6 +122,10 @@ CREATE TABLE public."Doctors" (
     "UserType" integer NOT NULL,
     "Activated" boolean NOT NULL
 );
+
+
+ALTER TABLE public."Doctors" OWNER TO root;
+
 --
 -- TOC entry 214 (class 1259 OID 33108)
 -- Name: Doctors_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -131,6 +153,10 @@ CREATE TABLE public."Equipments" (
     "Amount" integer NOT NULL,
     deleted boolean NOT NULL
 );
+
+
+ALTER TABLE public."Equipments" OWNER TO root;
+
 --
 -- TOC entry 233 (class 1259 OID 33216)
 -- Name: Equipments_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -160,6 +186,10 @@ CREATE TABLE public."Feedbacks" (
     "Anonymous" boolean NOT NULL,
     "Publish" boolean NOT NULL
 );
+
+
+ALTER TABLE public."Feedbacks" OWNER TO root;
+
 --
 -- TOC entry 216 (class 1259 OID 33116)
 -- Name: Feedbacks_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -186,6 +216,9 @@ CREATE TABLE public."Floors" (
     deleted boolean NOT NULL
 );
 
+
+ALTER TABLE public."Floors" OWNER TO root;
+
 --
 -- TOC entry 218 (class 1259 OID 33124)
 -- Name: Floors_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -211,6 +244,9 @@ CREATE TABLE public."Medicines" (
     "Name" text,
     "Quantity" integer NOT NULL
 );
+
+
+ALTER TABLE public."Medicines" OWNER TO root;
 
 --
 -- TOC entry 220 (class 1259 OID 33130)
@@ -257,6 +293,9 @@ CREATE TABLE public."Patients" (
     "Activated" boolean NOT NULL
 );
 
+
+ALTER TABLE public."Patients" OWNER TO root;
+
 --
 -- TOC entry 226 (class 1259 OID 33154)
 -- Name: Patients_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -293,6 +332,9 @@ CREATE TABLE public."Prescriptions" (
     "PharmacyName" text
 );
 
+
+ALTER TABLE public."Prescriptions" OWNER TO root;
+
 --
 -- TOC entry 222 (class 1259 OID 33138)
 -- Name: Prescriptions_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -324,6 +366,8 @@ CREATE TABLE public."Rooms" (
 );
 
 
+ALTER TABLE public."Rooms" OWNER TO root;
+
 --
 -- TOC entry 228 (class 1259 OID 33167)
 -- Name: Rooms_id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -352,6 +396,9 @@ CREATE TABLE public."SurveyQuestion" (
     "Category" integer NOT NULL
 );
 
+
+ALTER TABLE public."SurveyQuestion" OWNER TO root;
+
 --
 -- TOC entry 224 (class 1259 OID 33146)
 -- Name: SurveyQuestion_Id_seq; Type: SEQUENCE; Schema: public; Owner: root
@@ -377,6 +424,8 @@ CREATE TABLE public."__EFMigrationsHistory" (
     "ProductVersion" character varying(32) NOT NULL
 );
 
+
+ALTER TABLE public."__EFMigrationsHistory" OWNER TO root;
 
 --
 -- TOC entry 3230 (class 2606 OID 33099)
@@ -630,6 +679,15 @@ ALTER TABLE ONLY public."Rooms"
 
 ALTER TABLE ONLY public."Rooms"
     ADD CONSTRAINT "FK_Rooms_Floors_floorid" FOREIGN KEY (floorid) REFERENCES public."Floors"(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3415 (class 0 OID 0)
+-- Dependencies: 3414
+-- Name: DATABASE hospitaldb; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT ALL ON DATABASE hospitaldb TO root;
 
 
 --
